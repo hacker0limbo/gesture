@@ -112,6 +112,15 @@ gesture.set(config).on('tap', function(event){
 
 ## 例子
 
-一个关于可拖动`div`的例子: ![demo](demo.gif)
+一个关于可拖动`div`的例子: 
+
+![demo](demo.gif)
 
 代码均在`index.html`和`index.js`里面
+
+## Reference
+感谢若愚老师的直播课程: https://github.com/jirengu/course-mobile-gesture-libray
+
+另参考了两篇文章:
+- https://juejin.im/post/5a795e6d6fb9a0635630fe2b#heading-7
+- https://juejin.im/post/57b074fda633bd0057035b6d#heading-8
