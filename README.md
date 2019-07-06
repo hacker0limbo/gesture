@@ -14,7 +14,7 @@
 
 ## 使用
 
-`git clone`或者下载到文件夹, 由于使用了 ES6 的模块语法, 本地需要开启服务器配合使用
+`git clone`或者下载到本地, 由于使用了 ES6 的模块语法, 本地需要开启服务器配合使用
 
 ### 基本使用
 
@@ -25,6 +25,51 @@ import Gesture from "./lib/gesture.js"
 const gesture = new Gesture('.touch')
 gesture.on('tap', function(event){
   console.log('tapped')
+})
+```
+
+### 高级使用
+提供了额外的两个接口`JGesture`和`HGesture`, 下面所有例子均使用该页面
+
+```html
+<!-- 假设页面的元素为 -->
+<h1 class="touch">touch me1</h1>
+<h1 class="touch">touch me2</h1>
+```
+
+#### JGesture
+
+`JGesture`相比普通`Gesture`选择器可以一次选择多个元素绑定事件, 这些多个元素的监听函数是一样的, 使用方法如下:
+
+```javascript
+import JGesture from "./lib/jgesture.js"
+
+JGesture.on('swipe', '.touch', function(evt) {
+  console.log(this)  // 指向触发该事件的对应的元素
+})
+```
+
+#### HGesture
+`HGesture`将`Gesture`里面的事件做成了真正的自定义事件, 同时选择器也允许选择多个元素一次性绑定同一个监听函数, 使用方法如下:
+
+```javascript
+import HGesture from "./lib/hgesture.js"
+
+// 初始化
+HGesture.init('.touch')
+console.log(HGesture.list()) // 可以获取到所有的对应到 .touch 元素的 gesture 对象, 这里因该为两个
+
+// 只绑定事件到第一个元素上进行监听
+document.querySelector('.touch').addEventListener('swipe', evt => {
+  // 使用 evt.detail.diretion 获取到移动的信息
+  console.log('swipe'+ evt.detail.direction)
+})
+
+// 将 swipe 绑定到所有的 .touch 元素上, 使用同一个事件监听函数
+document.querySelectorAll('.touch').forEach(node => {
+  node.addEventListener('swipe',  evt => {
+    console.log('swipe2')
+  })
 })
 ```
 
@@ -49,7 +94,7 @@ gesture.on('tap', function(event){
 所有事件的处理支持链式调用, 一个事件可以有多个监听回调函数
 
 - `on('eventname', callback)`: 监听一个移动手势事件, 第一个参数为事件名, 第二个参数为回调函数, 回调函数可以选择带上参数`event`为原生移动事件
-- `off(eventname, callback)`: 移除一个事件上的监听的回调函数, 第一个参数为事件名, 第二个参数为需要在该事件名上移除的监听函数(可选, 如果没有指定, 则该事件上的所有监听函数都被清空)
+- `off('eventname', callback)`: 移除一个事件上的监听的回调函数, 第一个参数为事件名, 第二个参数为需要在该事件名上移除的监听函数(可选, 如果没有指定, 则该事件上的所有监听函数都被清空)
 - `destroy()`: 销毁一个移动端手势对象, 该对象上所有的监听器均被清空, 所有数据回归为默认
 
 注意: 
@@ -122,5 +167,5 @@ gesture.set(config).on('tap', function(event){
 感谢若愚老师的直播课程: https://github.com/jirengu/course-mobile-gesture-libray
 
 另参考了两篇文章:
-- https://juejin.im/post/5a795e6d6fb9a0635630fe2b#heading-7
-- https://juejin.im/post/57b074fda633bd0057035b6d#heading-8
+- https://juejin.im/post/5a795e6d6fb9a0635630fe2b
+- https://juejin.im/post/57b074fda633bd0057035b6d

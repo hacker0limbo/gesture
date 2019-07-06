@@ -84,7 +84,6 @@ gesture2.on('touchstart', function(event){
 })
 
 const gesture3 = new Gesture('.log')
-const timeStamp = Date.now()
 gesture3.on('tap', function(event){
   this.innerHTML = '触发了<span class="red">tap</span>事件'
 })
